@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+import { auth } from 'express-oauth2-jwt-bearer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const validateRequest = (
   req: Request,
@@ -15,3 +19,9 @@ export const validateRequest = (
 
   next(); // Tiến hành tiếp với các middleware hoặc route handler tiếp theo
 };
+
+export const jwtCheck = auth({
+  audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+  tokenSigningAlg: 'RS256',
+});
